@@ -12,8 +12,10 @@ from pungy.get_metadata import get_cover, get_info_from_files
 from pungy.database import DataBase, get_db
 
 
+cli = typer.Typer()
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
+
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
@@ -78,8 +80,9 @@ def getFile(path: str):
     print(path)
     return FileResponse(Path(path), headers={"Accept-ranges": "bytes"})
 
-def main(
-    path: str = typer.Option("/mnt/media/Musica", "--path", "-P"),
+@cli.command()
+def run(
+    path: str = typer.Option("./", "--path", "-P"),
     port: int = typer.Option(8000, "--port", "-p"),
 ):
     database = DataBase(Path(path))    
@@ -88,4 +91,4 @@ def main(
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    typer.run(run)
