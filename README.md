@@ -1,22 +1,24 @@
-![](static/images/favicon.png)
+![](pungy/static/images/favicon.png)
 # Pungy
 _A simple HTTP server and client for playing MP3 files from folders_
 
 ## Install
 
-```
-pip install <this repo>
-```
-
-or
+Python 3.10 is required. It is advised to create a virtual environment or using `pipx` to install pungy without intefering with the system python. In your virtual environment simply write:
 
 ```
-pipx install <this repo>
+pip install git+https://github.com/abul4fia/pungy.git
+```
+
+or, if you use `pipx`, no virtual environment is required:
+
+```
+pipx install git+https://github.com/abul4fia/pungy.git
 ```
 
 ## Run
 
-Go to the folder in which is the music and run
+Go to the folder in which is the music you want to serve, and run
 
 ```
 pungy
