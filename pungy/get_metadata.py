@@ -126,7 +126,7 @@ def get_m4a_cover(filename: Path) -> CoverData:
 
 @lru_cache
 def get_info_from_files(files:tuple[Path, ...]) -> list[SongInfo]:
-    print(f"get_info_from_files(tuple[{len(files)}])")
+    # print(f"get_info_from_files(tuple[{len(files)}])")
     results = []
     i = 0
     for f in files:

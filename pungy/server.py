@@ -82,11 +82,20 @@ def getFile(path: str):
 
 @cli.command()
 def run(
-    path: str = typer.Option("./", "--path", "-P"),
+    path: str = typer.Option(".", "--path", "-P"),
     port: int = typer.Option(8000, "--port", "-p"),
+    shuffle: bool = typer.Option(False, "--shuffle", "-s"),
+    debug: bool = typer.Option(False, "--debug", "-d"),
 ):
-    database = DataBase(Path(path))    
+    path = Path(path)
+    if debug: 
+        print("Ejecutando pungy desde " + __file__)
+        print("Escaneando", "carpeta" if path.is_dir() else "archivo", path)
+
+    database = DataBase(path, shuffle, debug)
     print(f"Detectados {len(database.files)} ficheros")
+    if shuffle:
+        print("Reproducción aleatoria activada")
     uvicorn.run("pungy.server:app", host="0.0.0.0", port=port, workers=1)
 
 
