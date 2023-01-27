@@ -15,7 +15,7 @@ $(function(){
 		table = "<thead><tr><th>Genre</th><th>Artist</th><th>Album</th><th>Title</th><th>Download</th></tr></thead><tbody>";
 		$.each(songs["files"], function(index, value) {
 			var odd = (index%2 == 0) ? "": " odd";
-			table += "<tr class='songItem" + odd + "' attr-index='" + value["index"] + "'><td> " + value['genre'] + "</td><td> " + value['artist'] + "</td><td> " + value['album'] + "</td><td> " + value['title'] + "</td><td><a href='/file/" + value["file"] +"' target='_blank' class='download'><img src='/static/images/download.png' alt='download' /></a></td></tr>";
+			table += "<tr class='songItem" + odd + "' attr-index='" + value["index"] + "'><td> " + value['genre'] + "</td><td> " + value['artist'] + "</td><td> " + value['album'] + "</td><td> " + value['title'] + "</td><td><a href='/file/?path=" + value["file"] +"' target='_blank' class='download'><img src='/static/images/download.png' alt='download' /></a></td></tr>";
 		});
 		table += "</tbody>";
 		$("#songList").html(table);
@@ -109,7 +109,7 @@ $(function(){
 		}
 		$("#player").attr("src", "/file/?path=" + songData["file"]);
 		
-		if (isPlaying) {
+		if (isPlaying==isPlaying) {
 			startSong();
 		}
 	};
