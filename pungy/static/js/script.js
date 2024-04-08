@@ -103,10 +103,19 @@ $(function(){
 		$("#genre").text(songData["infos"]["genre"]);
 		$("#title").text(songData["infos"]["title"]);
 		if (songData["art"] != "") {
-			$("#thumbnail").attr("src", "data:" + songData["mime"] + ";base64," + songData["art"])
+			art = "data:" + songData["mime"] + ";base64," + songData["art"];
 		} else {
-			$("#thumbnail").attr("src", "/static/images/default.png")
+			art = "/static/images/default.png";
 		}
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: songData["infos"]["title"],
+			artist: songData["infos"]["artist"],
+			album: songData["infos"]["album"], 
+			artwork: [
+			  { src: art },
+			]
+		  });
+		$("#thumbnail").attr("src", art)
 		$("#player").attr("src", "/file/?path=" + songData["file"]);
 		
 		if (isPlaying==isPlaying) {
@@ -119,6 +128,7 @@ $(function(){
 		$(".plyr_control ul li a#ppButton").removeClass("ppause");
 		player.pause();
 		document.title = "Player";
+        navigator.mediaSession.playbackState = 'paused';
 	};
 
 	startSong = function(){
@@ -126,6 +136,7 @@ $(function(){
 		$(".plyr_control ul li a#ppButton").removeClass("pplay");
 		player.play();
 		document.title = "Player - " + $("#artist").text() + " : " + $("#title").text();
+        navigator.mediaSession.playbackState = 'playing';
 	};
 
 	// Ajax
@@ -220,6 +231,7 @@ $(function(){
 			isPlaying = false;
 			$(".plyr_control ul li a#ppButton").addClass("pplay");
 			$(".plyr_control ul li a#ppButton").removeClass("ppause");
+            navigator.mediaSession.playbackState = 'paused';
 		}
 	};
 
@@ -230,6 +242,27 @@ $(function(){
 	$(".pright").click(function(){
 		nextSong();
 	});
+
+	navigator.mediaSession.setActionHandler('nexttrack', function() {
+		// Lógica para cambiar a la siguiente pista
+		nextSong();
+	});
+	
+	navigator.mediaSession.setActionHandler('previoustrack', function() {
+		// Lógica para cambiar a la pista anterior
+		prevSong();
+	});
+	
+	navigator.mediaSession.setActionHandler('play', function() {
+		startSong();
+		// Actualizar estado de sesión, por ejemplo
+		navigator.mediaSession.playbackState = 'playing';
+	});
+	
+	  navigator.mediaSession.setActionHandler('pause', function() {
+		stopSong();
+		navigator.mediaSession.playbackState = 'paused';
+	});	
 
 	$(".pslider").click(function(e){
 		player.currentTime = (e.offsetX * player.duration ) / 298;
